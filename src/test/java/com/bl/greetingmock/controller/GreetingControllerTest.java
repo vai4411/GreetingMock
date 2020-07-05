@@ -19,8 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @RunWith(MockitoJUnitRunner.class)
 public class GreetingControllerTest {
@@ -87,6 +86,25 @@ public class GreetingControllerTest {
         MvcResult result = mockMvc.perform(get("/greeting/display/1")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+        String content = result.getResponse().getContentAsString();
+        Assert.assertEquals(greetingMessage,content);
+    }
+
+    @Test
+    public void givenGreeting_WhenGreetingGetByIdAndUpdate_ThenReturnGreeting() throws Exception {
+        GreetingDTO greetingDTO = new GreetingDTO();
+        greetingDTO.setFirstName("vaibhav");
+        greetingDTO.setLastName("patil");
+        Greeting greeting = new Greeting(greetingDTO);
+        greeting.setFirstName("abc");
+        Mockito.when(greetingService.update(Mockito.anyInt(),Mockito.any())).thenReturn(greeting);
+        String greetingMessage = mapper.writeValueAsString(greeting);
+        MvcResult result = mockMvc.perform(put("/greeting/update/1")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .content(greetingMessage))
                 .andExpect(status().isOk())
                 .andReturn();
         String content = result.getResponse().getContentAsString();

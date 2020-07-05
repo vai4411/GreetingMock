@@ -15,4 +15,9 @@ public class GreetingService implements IGreetingService {
     public Greeting getGreetingById(int id) {
         return null;
     }
+
+    @Override
+    public Greeting update(int id, GreetingDTO greetingDTO) {
+        return null;
+    }
 }

@@ -22,4 +22,9 @@ public class GreetingController {
     public Greeting getGreeting(@PathVariable int id) {
         return greetingService.getGreetingById(id);
     }
+
+    @PutMapping(path = "/update/{id}")
+    public Greeting update(@PathVariable int id,@RequestBody GreetingDTO greetingDTO) {
+        return greetingService.update(id,greetingDTO);
+    }
 }
