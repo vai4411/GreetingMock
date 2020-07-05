@@ -1,6 +1,8 @@
 package com.bl.greetingmock.dto;
 
-import javax.persistence.Entity;
+import org.springframework.lang.NonNull;
+
+import javax.validation.constraints.NotNull;
 
 public class GreetingDTO {
 

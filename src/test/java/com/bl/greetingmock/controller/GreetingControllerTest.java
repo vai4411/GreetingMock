@@ -109,7 +109,8 @@ public class GreetingControllerTest {
 
     @Test
     public void givenGreeting_WhenGreetingDeleteByIdSuccessFully_ThenReturnStatusOK() throws Exception {
-        mockMvc.perform(delete("/greeting/delete/1"))
+        mockMvc.perform(delete("/greeting/delete/1")
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
     }

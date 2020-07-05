@@ -1,7 +1,6 @@
 package com.bl.greetingmock.model;
 
 import com.bl.greetingmock.dto.GreetingDTO;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
