@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GreetingService implements IGreetingService {
+
     @Override
     public Greeting add(GreetingDTO greetingDTO) {
         return null;
@@ -19,5 +20,9 @@ public class GreetingService implements IGreetingService {
     @Override
     public Greeting update(int id, GreetingDTO greetingDTO) {
         return null;
+    }
+
+    @Override
+    public void delete(int id) {
     }
 }

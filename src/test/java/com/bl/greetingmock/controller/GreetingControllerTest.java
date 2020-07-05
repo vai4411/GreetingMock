@@ -76,7 +76,7 @@ public class GreetingControllerTest {
     }
 
     @Test
-    public void givenGreeting_WhenGreetingGetById_ThenReturnGreeting() throws Exception {
+    public void givenGreeting_WhenGreetingGetByIdSuccessfully_ThenReturnGreeting() throws Exception {
         GreetingDTO greetingDTO = new GreetingDTO();
         greetingDTO.setFirstName("vaibhav");
         greetingDTO.setLastName("patil");
@@ -98,7 +98,6 @@ public class GreetingControllerTest {
         greetingDTO.setFirstName("vaibhav");
         greetingDTO.setLastName("patil");
         Greeting greeting = new Greeting(greetingDTO);
-        greeting.setFirstName("abc");
         Mockito.when(greetingService.update(Mockito.anyInt(),Mockito.any())).thenReturn(greeting);
         String greetingMessage = mapper.writeValueAsString(greeting);
         MvcResult result = mockMvc.perform(put("/greeting/update/1")
@@ -109,5 +108,14 @@ public class GreetingControllerTest {
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         Assert.assertEquals(greetingMessage,content);
+    }
+
+    @Test
+    public void givenGreeting_WhenGreetingDeleteByIdSuccessFully_ThenReturnStatusOK() throws Exception {
+        mockMvc.perform(delete("/greeting/delete/1")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
     }
 }

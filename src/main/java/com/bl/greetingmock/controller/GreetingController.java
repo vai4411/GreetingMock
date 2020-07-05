@@ -27,4 +27,9 @@ public class GreetingController {
     public Greeting update(@PathVariable int id,@RequestBody GreetingDTO greetingDTO) {
         return greetingService.update(id,greetingDTO);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable int id) {
+        greetingService.delete(id);
+    }
 }
