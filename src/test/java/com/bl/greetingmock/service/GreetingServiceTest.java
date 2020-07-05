@@ -11,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -61,5 +63,15 @@ public class GreetingServiceTest {
         Mockito.when(greetingRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(greeting));
         Greeting greeting1 = greetingService.update(1,greetingDTO);
         Assert.assertEquals(greeting,greeting1);
+    }
+
+    @Test
+    public void givenGreeting_WhenGetGreetingList_ThenReturnGreetingList() {
+        List<Greeting> list = new ArrayList<Greeting>();
+        list.add(new Greeting(new GreetingDTO("vaibhav","patil")));
+        list.add(new Greeting(new GreetingDTO("abc","def")));
+        Mockito.when(greetingRepository.findAll()).thenReturn(list);
+        List list1 = greetingService.getAll();
+        Assert.assertEquals(list,list1);
     }
 }
