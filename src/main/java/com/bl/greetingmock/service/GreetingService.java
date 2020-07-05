@@ -4,6 +4,8 @@ import com.bl.greetingmock.dto.GreetingDTO;
 import com.bl.greetingmock.model.Greeting;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GreetingService implements IGreetingService {
 
@@ -24,5 +26,10 @@ public class GreetingService implements IGreetingService {
 
     @Override
     public void delete(int id) {
+    }
+
+    @Override
+    public List<Greeting> getAll() {
+        return null;
     }
 }

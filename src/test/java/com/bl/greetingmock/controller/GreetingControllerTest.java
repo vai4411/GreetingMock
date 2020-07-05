@@ -19,6 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @RunWith(MockitoJUnitRunner.class)
@@ -44,15 +47,12 @@ public class GreetingControllerTest {
 
     @Test
     public void givenGreeting_WhenGreetingAddedSuccessfully_ThenReturnGreeting() throws Exception {
-        GreetingDTO greetingDTO = new GreetingDTO();
-        greetingDTO.setFirstName("vaibhav");
-        greetingDTO.setLastName("patil");
+        GreetingDTO greetingDTO = new GreetingDTO("vaibhav","patil");
         Greeting greeting = new Greeting(greetingDTO);
         Mockito.when(greetingService.add(Mockito.any())).thenReturn(greeting);
         String greetingMessage = mapper.writeValueAsString(greeting);
         MvcResult result = mockMvc.perform(post("/greeting/add")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .accept(MediaType.APPLICATION_JSON_VALUE)
                         .content(greetingMessage))
                         .andExpect(status().isOk())
                         .andReturn();
@@ -62,14 +62,11 @@ public class GreetingControllerTest {
 
     @Test
     public void givenGreeting_WhenGreetingAddPathIsWrong_ThenReturnHttpStatusBadRequest() throws Exception {
-        GreetingDTO greetingDTO = new GreetingDTO();
-        greetingDTO.setFirstName("vaibhav");
-        greetingDTO.setLastName("patil");
+        GreetingDTO greetingDTO = new GreetingDTO("vaibhav","patil");
         Greeting greeting = new Greeting(greetingDTO);
         String greetingMessage = mapper.writeValueAsString(greeting);
         mockMvc.perform(post("/greeting/adds")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(greetingMessage))
                 .andExpect(status().is4xxClientError())
                 .andReturn();
@@ -77,15 +74,11 @@ public class GreetingControllerTest {
 
     @Test
     public void givenGreeting_WhenGreetingGetByIdSuccessfully_ThenReturnGreeting() throws Exception {
-        GreetingDTO greetingDTO = new GreetingDTO();
-        greetingDTO.setFirstName("vaibhav");
-        greetingDTO.setLastName("patil");
+        GreetingDTO greetingDTO = new GreetingDTO("vaibhav","patil");
         Greeting greeting = new Greeting(greetingDTO);
         Mockito.when(greetingService.getGreetingById(Mockito.anyInt())).thenReturn(greeting);
         String greetingMessage = mapper.writeValueAsString(greeting);
-        MvcResult result = mockMvc.perform(get("/greeting/display/1")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+        MvcResult result = mockMvc.perform(get("/greeting/display/1"))
                 .andExpect(status().isOk())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
@@ -94,15 +87,12 @@ public class GreetingControllerTest {
 
     @Test
     public void givenGreeting_WhenGreetingGetByIdAndUpdate_ThenReturnGreeting() throws Exception {
-        GreetingDTO greetingDTO = new GreetingDTO();
-        greetingDTO.setFirstName("vaibhav");
-        greetingDTO.setLastName("patil");
+        GreetingDTO greetingDTO = new GreetingDTO("vaibhav","patil");
         Greeting greeting = new Greeting(greetingDTO);
         Mockito.when(greetingService.update(Mockito.anyInt(),Mockito.any())).thenReturn(greeting);
         String greetingMessage = mapper.writeValueAsString(greeting);
         MvcResult result = mockMvc.perform(put("/greeting/update/1")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(greetingMessage))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -112,10 +102,24 @@ public class GreetingControllerTest {
 
     @Test
     public void givenGreeting_WhenGreetingDeleteByIdSuccessFully_ThenReturnStatusOK() throws Exception {
-        mockMvc.perform(delete("/greeting/delete/1")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+        mockMvc.perform(delete("/greeting/delete/1"))
                 .andExpect(status().isOk())
                 .andReturn();
+    }
+
+    @Test
+    public void givenGreeting_WhenGetGreetingList_ThenReturnGreetingList() throws Exception {
+        List<Greeting> list = new ArrayList<Greeting>();
+        list.add(new Greeting(new GreetingDTO("vaibhav","patil")));
+        list.add(new Greeting(new GreetingDTO("abc","def")));
+        Mockito.when(greetingService.getAll()).thenReturn(list);
+        String greetingMessage = mapper.writeValueAsString(list);
+        MvcResult result = mockMvc.perform(get("/greeting/list")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(greetingMessage))
+                .andExpect(status().isOk())
+                .andReturn();
+        String content = result.getResponse().getContentAsString();
+        Assert.assertEquals(greetingMessage,content);
     }
 }
