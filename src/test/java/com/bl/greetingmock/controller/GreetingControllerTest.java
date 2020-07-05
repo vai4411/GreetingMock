@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
@@ -35,7 +36,7 @@ public class GreetingControllerTest {
     }
 
     @Test
-    public void givenGreeting_WhenGreetingAddSuccessfully_ThenReturnStatusOK() throws Exception {
+    public void givenGreeting_WhenGreetingAddedSuccessfully_ThenReturnGreeting() throws Exception {
         GreetingDTO greetingDTO = new GreetingDTO();
         greetingDTO.setFirstName("vaibhav");
         greetingDTO.setLastName("patil");
@@ -49,5 +50,20 @@ public class GreetingControllerTest {
                         .andReturn();
         String content = result.getResponse().getContentAsString();
         Assert.assertEquals(greetingMessage,content);
+    }
+
+    @Test
+    public void givenGreeting_WhenGreetingAddPathIsWrong_ThenReturnHttpStatusBadRequest() throws Exception {
+        GreetingDTO greetingDTO = new GreetingDTO();
+        greetingDTO.setFirstName("vaibhav");
+        greetingDTO.setLastName("patil");
+        Greeting greeting = new Greeting(greetingDTO);
+        String greetingMessage = mapper.writeValueAsString(greeting);
+        mockMvc.perform(post("/greeting/adds")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .content(greetingMessage))
+                .andExpect(status().is4xxClientError())
+                .andReturn();
     }
 }
