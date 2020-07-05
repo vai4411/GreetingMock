@@ -1,6 +1,7 @@
 package com.bl.greetingmock.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.bl.greetingmock.model.Greeting;
+import org.springframework.data.repository.CrudRepository;
 
-public interface IGreetingRepository extends JpaRepository {
+public interface IGreetingRepository extends CrudRepository<Greeting,Long> {
 }

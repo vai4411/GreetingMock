@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IGreetingService {
     Greeting add(GreetingDTO greetingDTO);
-    Greeting getGreetingById(int id);
+    Object getGreetingById(long id);
     Greeting update(int id, GreetingDTO greetingDTO);
     void delete(int id);
     List<Greeting> getAll();

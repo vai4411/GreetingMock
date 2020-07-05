@@ -14,6 +14,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Optional;
+
 @RunWith(MockitoJUnitRunner.class)
 public class GreetingServiceTest {
 
@@ -38,5 +40,16 @@ public class GreetingServiceTest {
         Mockito.when(greetingRepository.save(Mockito.any())).thenReturn(greeting);
         Greeting greeting1 = greetingService.add(greetingDTO);
         Assert.assertEquals(greeting,greeting1);
+    }
+
+    @Test
+    public void givenGreeting_WhenGreetingGetByIdSuccessfully_ThenReturnGreeting() {
+        GreetingDTO greetingDTO = new GreetingDTO();
+        greetingDTO.setFirstName("abc");
+        greetingDTO.setLastName("def");
+        Greeting greeting = new Greeting(greetingDTO);
+        Mockito.when(greetingRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(greeting));
+        Greeting greeting1 = greetingService.getGreetingById(0);
+        Assert.assertEquals(Optional.of(greeting).get(),greeting1);
     }
 }

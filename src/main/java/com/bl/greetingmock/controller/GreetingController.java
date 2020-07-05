@@ -22,7 +22,7 @@ public class GreetingController {
 
     @GetMapping("/display/{id}")
     public Greeting getGreeting(@PathVariable int id) {
-        return greetingService.getGreetingById(id);
+        return (Greeting) greetingService.getGreetingById(id);
     }
 
     @PutMapping(path = "/update/{id}")
