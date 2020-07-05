@@ -1,5 +1,7 @@
 package com.bl.greetingmock.dto;
 
+import javax.persistence.Entity;
+
 public class GreetingDTO {
 
     private String firstName;

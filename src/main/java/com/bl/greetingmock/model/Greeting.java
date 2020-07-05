@@ -3,11 +3,13 @@ package com.bl.greetingmock.model;
 import com.bl.greetingmock.dto.GreetingDTO;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
 
+@Entity
 public class Greeting {
 
     @Id
@@ -17,6 +19,9 @@ public class Greeting {
     private String lastName;
     private String createdDate;
     private String updatedDate;
+
+    public Greeting() {
+    }
 
     public Greeting(GreetingDTO greetingDTO) {
         this.firstName = greetingDTO.getFirstName();

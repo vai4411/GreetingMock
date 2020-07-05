@@ -2,7 +2,7 @@ package com.bl.greetingmock.service;
 
 import com.bl.greetingmock.dto.GreetingDTO;
 import com.bl.greetingmock.model.Greeting;
-import com.bl.greetingmock.repository.IGreetingRepository;
+import com.bl.greetingmock.repository.GreetingRepository;
 import com.bl.greetingmock.util.DateAndTimeFormatUtil;
 import com.bl.greetingmock.util.GenerateUniqueId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.List;
 public class GreetingService implements IGreetingService {
 
     @Autowired
-    private IGreetingRepository greetingRepository;
+    GreetingRepository greetingRepository;
 
     @Override
     public Greeting add(GreetingDTO greetingDTO) {
@@ -22,19 +22,22 @@ public class GreetingService implements IGreetingService {
         greeting.setId(GenerateUniqueId.getUniqueId());
         greeting.setCreatedDate(DateAndTimeFormatUtil.currentDateAndTime());
         greeting.setUpdatedDate(DateAndTimeFormatUtil.currentDateAndTime());
-        greetingRepository.save(greeting);
-        return greeting;
+        return greetingRepository.save(greeting);
     }
 
     @Override
-    public Greeting getGreetingById(long id) {
+    public Greeting getGreetingById(int id) {
         return greetingRepository.findById(id).get();
     }
 
 
     @Override
     public Greeting update(int id, GreetingDTO greetingDTO) {
-        return null;
+        Greeting greeting = getGreetingById(id);
+        greeting.setFirstName(greetingDTO.getFirstName());
+        greeting.setLastName(greetingDTO.getLastName());
+        greeting.setUpdatedDate(DateAndTimeFormatUtil.currentDateAndTime());
+        return greetingRepository.save(greeting);
     }
 
     @Override
