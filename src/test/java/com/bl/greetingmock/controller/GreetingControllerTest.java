@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @RunWith(MockitoJUnitRunner.class)
 public class GreetingControllerTest {
 
@@ -47,11 +48,15 @@ public class GreetingControllerTest {
 
     @Test
     public void givenGreeting_WhenGreetingAddedSuccessfully_ThenReturnGreeting() throws Exception {
-        GreetingDTO greetingDTO = new GreetingDTO("vaibhav","patil");
+        GreetingDTO greetingDTO = new GreetingDTO();
+        greetingDTO.setFirstName("abc");
+        greetingDTO.setLastName("def");
         Greeting greeting = new Greeting(greetingDTO);
+        greeting.setId(4);
         Mockito.when(greetingService.add(Mockito.any())).thenReturn(greeting);
         String greetingMessage = mapper.writeValueAsString(greeting);
         MvcResult result = mockMvc.perform(post("/greeting/add")
+                        .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(greetingMessage))
                         .andExpect(status().isOk())
@@ -87,7 +92,9 @@ public class GreetingControllerTest {
 
     @Test
     public void givenGreeting_WhenGreetingGetByIdAndUpdate_ThenReturnGreeting() throws Exception {
-        GreetingDTO greetingDTO = new GreetingDTO("vaibhav","patil");
+        GreetingDTO greetingDTO = new GreetingDTO();
+        greetingDTO.setFirstName("abc");
+        greetingDTO.setLastName("def");
         Greeting greeting = new Greeting(greetingDTO);
         Mockito.when(greetingService.update(Mockito.anyInt(),Mockito.any())).thenReturn(greeting);
         String greetingMessage = mapper.writeValueAsString(greeting);

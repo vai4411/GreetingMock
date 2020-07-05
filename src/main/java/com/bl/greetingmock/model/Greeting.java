@@ -1,10 +1,12 @@
 package com.bl.greetingmock.model;
 
 import com.bl.greetingmock.dto.GreetingDTO;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Objects;
 
 public class Greeting {
 
@@ -59,5 +61,17 @@ public class Greeting {
 
     public void setUpdatedDate(String updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Greeting greeting = (Greeting) o;
+        return id == greeting.id &&
+                Objects.equals(firstName, greeting.firstName) &&
+                Objects.equals(lastName, greeting.lastName) &&
+                Objects.equals(createdDate, greeting.createdDate) &&
+                Objects.equals(updatedDate, greeting.updatedDate);
     }
 }

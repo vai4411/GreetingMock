@@ -2,6 +2,8 @@ package com.bl.greetingmock.service;
 
 import com.bl.greetingmock.dto.GreetingDTO;
 import com.bl.greetingmock.model.Greeting;
+import com.bl.greetingmock.repository.IGreetingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,9 +11,14 @@ import java.util.List;
 @Service
 public class GreetingService implements IGreetingService {
 
+    @Autowired
+    private IGreetingRepository greetingRepository;
+
     @Override
     public Greeting add(GreetingDTO greetingDTO) {
-        return null;
+        Greeting greeting = new Greeting(greetingDTO);
+        greetingRepository.save(greeting);
+        return greeting;
     }
 
     @Override

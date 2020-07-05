@@ -5,6 +5,9 @@ public class GreetingDTO {
     private String firstName;
     private String lastName;
 
+    public GreetingDTO() {
+    }
+
     public GreetingDTO(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
