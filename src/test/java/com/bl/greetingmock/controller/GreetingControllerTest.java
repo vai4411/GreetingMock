@@ -56,24 +56,36 @@ public class GreetingControllerTest {
         Mockito.when(greetingService.add(Mockito.any())).thenReturn(greeting);
         String greetingMessage = mapper.writeValueAsString(greeting);
         MvcResult result = mockMvc.perform(post("/greeting/add")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(greetingMessage))
-                        .andExpect(status().isOk())
-                        .andReturn();
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(greetingMessage))
+                .andExpect(status().isOk())
+                .andReturn();
         String content = result.getResponse().getContentAsString();
         Assert.assertEquals(greetingMessage,content);
     }
 
     @Test
-    public void givenGreeting_WhenGreetingAddPathIsWrong_ThenReturnHttpStatusBadRequest() throws Exception {
+    public void givenGreeting_WhenGreetingAddPathIsWrong_ThenReturnHttpStatusNotFound() throws Exception {
         GreetingDTO greetingDTO = new GreetingDTO("vaibhav","patil");
         Greeting greeting = new Greeting(greetingDTO);
         String greetingMessage = mapper.writeValueAsString(greeting);
         mockMvc.perform(post("/greeting/adds")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(greetingMessage))
-                .andExpect(status().is4xxClientError())
+                .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+    @Test
+    public void givenGreeting_WhenGreetingAddMappingIsWrong_ThenReturnHttpStatusMethodNotAllowedRequest() throws Exception {
+        GreetingDTO greetingDTO = new GreetingDTO("vaibhav","patil");
+        Greeting greeting = new Greeting(greetingDTO);
+        String greetingMessage = mapper.writeValueAsString(greeting);
+        mockMvc.perform(get("/greeting/add")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(greetingMessage))
+                .andExpect(status().isMethodNotAllowed())
                 .andReturn();
     }
 
@@ -88,6 +100,20 @@ public class GreetingControllerTest {
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         Assert.assertEquals(greetingMessage,content);
+    }
+
+    @Test
+    public void givenGreeting_WhenGreetingGetByIdPathIsWrong_ThenReturnHttpStatusNotFound() throws Exception {
+        mockMvc.perform(get("/greeting/displays/1"))
+                .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+    @Test
+    public void givenGreeting_WhenGreetingGetByIdMappingIsWrong_ThenReturnHttpStatusMethodNotAllowedRequest() throws Exception {
+        mockMvc.perform(post("/greeting/display/1"))
+                .andExpect(status().isMethodNotAllowed())
+                .andReturn();
     }
 
     @Test
@@ -108,12 +134,42 @@ public class GreetingControllerTest {
     }
 
     @Test
+    public void givenGreeting_WhenGreetingUpdateByIdPathIsWrong_ThenReturnHttpStatusNotFound() throws Exception {
+        mockMvc.perform(get("/greeting/updates/1"))
+                .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+    @Test
+    public void givenGreeting_WhenGreetingUpdateByIdMappingIsWrong_ThenReturnHttpStatusMethodNotAllowedRequest() throws Exception {
+        mockMvc.perform(post("/greeting/update/1"))
+                .andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+
+    @Test
     public void givenGreeting_WhenGreetingDeleteByIdSuccessFully_ThenReturnStatusOK() throws Exception {
         mockMvc.perform(delete("/greeting/delete/1")
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
     }
+
+    @Test
+    public void givenGreeting_WhenGreetingDeleteByIdPathIsWrong_ThenReturnHttpStatusNotFound() throws Exception {
+        mockMvc.perform(get("/greeting/deletes/1"))
+                .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+    @Test
+    public void givenGreeting_WhenGreetingDeleteByIdMappingIsWrong_ThenReturnHttpStatusMethodNotAllowedRequest() throws Exception {
+        mockMvc.perform(post("/greeting/delete/1"))
+                .andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
 
     @Test
     public void givenGreeting_WhenGetGreetingList_ThenReturnGreetingList() throws Exception {
@@ -129,5 +185,19 @@ public class GreetingControllerTest {
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         Assert.assertEquals(greetingMessage,content);
+    }
+
+    @Test
+    public void givenGreeting_WhenGreetingListPathIsWrong_ThenReturnHttpStatusNotFound() throws Exception {
+        mockMvc.perform(get("/greeting/lists"))
+                .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+    @Test
+    public void givenGreeting_WhenGreetingListMappingIsWrong_ThenReturnHttpStatusMethodNotAllowedRequest() throws Exception {
+        mockMvc.perform(post("/greeting/list"))
+                .andExpect(status().isMethodNotAllowed())
+                .andReturn();
     }
 }

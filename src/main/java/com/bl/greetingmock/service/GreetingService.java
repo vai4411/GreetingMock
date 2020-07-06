@@ -21,7 +21,7 @@ public class GreetingService implements IGreetingService {
     @Override
     public Greeting add(GreetingDTO greetingDTO) throws GreetingException {
         if (ObjectUtils.isEmpty(greetingDTO.getFirstName()) || ObjectUtils.isEmpty(greetingDTO.getLastName()))
-                throw new GreetingException("Name may not be null");
+            throw new GreetingException("Name may not be null");
         Greeting greeting = new Greeting(greetingDTO);
         greeting.setId(GenerateUniqueId.getUniqueId());
         greeting.setCreatedDate(DateAndTimeFormatUtil.currentDateAndTime());

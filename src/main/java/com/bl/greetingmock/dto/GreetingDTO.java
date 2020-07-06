@@ -1,9 +1,5 @@
 package com.bl.greetingmock.dto;
 
-import org.springframework.lang.NonNull;
-
-import javax.validation.constraints.NotNull;
-
 public class GreetingDTO {
 
     private String firstName;
